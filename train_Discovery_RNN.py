@@ -21,6 +21,7 @@ import visdom_utils
 
 def CAS(input_shape):
     """Collaborative Attention Segmentation model."""
+    # Define Encode Layers
     input = tf.keras.layers.Input(input_shape)
     conv1 = tf.keras.layers.Conv2D(32, 3, activation="relu", input_shape=input_shape, padding='same')
     pool1 = tf.keras.layers.MaxPooling2D((5, 5))
@@ -72,7 +73,7 @@ def CAS_loss(img, mask):
 
 @tf.function
 def CAS_crossentropy(img, mask):
-    """Personalized crossentropy loss for CAS model."""
+    """Personalized crossentropy loss for DiscoveryRNN model."""
     rnn_shape = (tf.shape(mask)[0], TIMESTEPS, 100, 50, 1)
 
     # Reshape inputs for RNN

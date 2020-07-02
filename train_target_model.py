@@ -22,7 +22,6 @@ def import_dataset(var="gender"):
     """Select dataset based on string variable."""
     X, Y = utils.get_dataset_from_pickle(var)
     X, _ = utils.normalize_dataset(X, X)
-    #X, Y = switch_to_binary(X, Y)
     return (X, Y)
 
 
@@ -34,53 +33,6 @@ def reshape_timesteps(X, width=4, stride=2):
         new_X.append(new_x)
 
     return np.asarray(new_X)
-
-
-def augment_dataset(X, Y):
-    """Reshape timesteps so as to have them overlap"""
-    new_X = []
-    new_Y = []
-    count = 0
-    for x, y in zip(X, Y):
-        count += 1
-        new_X.append(x)
-        new_Y.append(y)
-        for i in range(3):
-            new_x = poisson_noise(x)
-            new_X.append(new_x)
-            new_Y.append(y)
-        print(f"Sample {count} of {len(X)} augmented.", end="\r")
-
-    return np.asarray(new_X), np.asarray(new_Y)
-
-
-def normalize_dataset_old(X_train, X_test):
-    """Normalize speech recognition and computer vision datasets."""
-    mean = np.mean(X_train)
-    std = np.std(X_train)
-    X_train = (X_train-std)/mean
-    X_test = (X_test-std)/mean
-    return X_train, X_test
-
-
-def poisson_noise(img, weight=1):
-    noise_mask = (np.random.poisson(np.abs(img * 255.0 * weight))/weight/255).astype(float)
-    return noise_mask
-
-
-def reshape_dataset(X_train, y_train, X_test, y_test):
-    """Reshape dataset for Convolution."""
-    X_test = X_test.reshape(X_test.shape[0],
-                            X_test.shape[1],
-                            X_test.shape[2],
-                            1).astype('float32')
-    X_train = X_train.reshape(X_train.shape[0],
-                              X_train.shape[1],
-                              X_train.shape[2],
-                              1).astype('float32')
-    y_train = tf.keras.utils.to_categorical(y_train)
-    y_test = tf.keras.utils.to_categorical(y_test)
-    return (X_train, y_train), (X_test, y_test)
 
 
 def choose_model(input_shape, classes=30, model_name="local"):
@@ -176,22 +128,6 @@ def train_model(model, data, hyperparams):
     return model
 
 
-def switch_to_binary(X, Y):
-    """Switch to binary dataset."""
-    Y_new = []
-    X_new = []
-    for x, y in zip(X, Y):
-        if y[0] == 1:
-            pass
-        else:
-            Y_new.append([y[1], y[2]])
-            X_new.append(x)
-
-    X_new = np.asarray(X_new)
-    Y_new = np.asarray(Y_new)
-    return X_new, Y_new
-
-
 def main():
     """Train LSTM model."""
     # Import data
@@ -206,7 +142,7 @@ def main():
                                                             shuffle=True,
                                                             random_state=RAND_STATE)
 
-        X_train, y_train = augment_dataset(X_train, y_train)
+        X_train, y_train = utils.augment_dataset(X_train, y_train)
 
         data = {
             'X_train': X_train,
