@@ -1,0 +1,9 @@
+# Discovery RNNs, explainable RNN saliency visualization, and its application to unsupervised segmentation of COVID-19 forced coughs
+
+In order to run the code in your computer, you will need to add two aditional folders: a models folder (where all model files will be stored), and a datasets folder (where all pickled dataset arrays will be stored). The dataset is in this case not provided as the IRB did not approve for open distribution.
+
+## Abstract
+Deep learning and Recurrent Neural Networks (RNNs) have revolutionized the field of audio analysis, providing flexible and robust recognition and categorization. Their wide adoption in hospitals and medical institutions is nonetheless still limited, in part because of their lack of explainability and possibility for expert cognitive knowledge. In this paper, we introduce Discovery RNNs, a neural network based architecture that learns to generate saliency visualizations by segmenting areas of interest in audio samples, allowing to better understand how predic- tions are made by target models and visualize unseen samples to assess the risk of errors. We demonstrate our approach on a forced cough sample dataset for COVID-19 screening, with two targeted models for the binary problems of gender and spoken language. Target model accuracies, 67.6% and 78.6% respectively, demonstrated for the first time that forced coughs can be used to extract cultural and biological information. Our results show that our visualization approach is effective in identifying areas of interest, indirectly segmenting cough events within the samples, while revealing a bias towards padded samples in the dataset. More work in this direction could enable the transfer of algorithmic knowledge to physicians by harnessing model input visualizations for educational purposes.
+
+#### Authors
+Ferran Hueto Puig, Prithvi Rajasekaran, Jordi Laguarta, Sanjay Sarma, Brian Subirana
